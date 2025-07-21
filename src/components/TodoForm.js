@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function TodoForm({ onAddTodo }) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,18 +15,21 @@ function TodoForm({ onAddTodo }) {
     };
 
     onAddTodo(newTodo);
-    setInput('');
+    setInput("");
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
         name="title"
+        data-testid="todo-input"
         placeholder="What needs to be done?"
         value={input}
-        onChange={e => setInput(e.target.value)}
+        onChange={(e) => setInput(e.target.value)}
       />
-      <button type="submit">Add</button>
+      <button type="submit" data-testid="add-button">
+        Add
+      </button>
     </form>
   );
 }

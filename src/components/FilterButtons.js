@@ -1,18 +1,23 @@
-import React from 'react';
+import React from "react";
 
 function FilterButtons({ currentFilter, onChange }) {
-  const filters = ['All', 'Active', 'Completed'];
+  const filters = [
+    { label: "All", testId: "filter-all" },
+    { label: "Active", testId: "filter-active" },
+    { label: "Completed", testId: "filter-completed" },
+  ];
 
   return (
-    <div style={{ marginTop: '10px' }}>
-      {filters.map(filter => (
+    <div style={{ marginTop: "10px" }}>
+      {filters.map((filter) => (
         <button
-          key={filter}
-          onClick={() => onChange(filter)}
-          disabled={filter === currentFilter}
-          style={{ marginRight: '5px' }}
+          key={filter.testId}
+          onClick={() => onChange(filter.label)}
+          data-testid={filter.testId}
+          className={filter.label === currentFilter ? "active" : null}
+          style={{ marginRight: "5px" }}
         >
-          {filter}
+          {filter.label}
         </button>
       ))}
     </div>
