@@ -2,7 +2,10 @@ import React from "react";
 
 function TodoItem({ todo, onToggleComplete, onDeleteTodo }) {
   return (
-    <li data-testid="todo-item" className={todo.completed ? "completed" : null}>
+    <li
+      data-testid="todo-item"
+      className={`todo-item ${todo.completed ? "completed" : null}`}
+    >
       <input
         type="checkbox"
         checked={todo.completed}

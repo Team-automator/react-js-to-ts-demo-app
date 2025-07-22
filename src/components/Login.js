@@ -40,59 +40,66 @@ function Login({ onLogin }) {
     setErrors(newErrors);
   };
 
-const handleInputChange = () => {
-  const username = usernameRef.current.value.trim();
-  const password = passwordRef.current.value;
+  const handleInputChange = () => {
+    const username = usernameRef.current.value.trim();
+    const password = passwordRef.current.value;
 
-  const updatedErrors = { ...errors };
+    const updatedErrors = { ...errors };
 
-  // Username live validation
-  if (username) {
-    updatedErrors.username = "";
-  }
-
-  // Password live validation
-  if (password) {
-    if (password.length < 6) {
-      updatedErrors.password = "Password must be at least 6 characters";
-    } else {
-      updatedErrors.password = "";
+    // Username live validation
+    if (username) {
+      updatedErrors.username = "";
     }
-  } else {
-    updatedErrors.password = "Password is required";
-  }
 
-  setErrors(updatedErrors);
-};
+    // Password live validation
+    if (password) {
+      if (password.length < 6) {
+        updatedErrors.password = "Password must be at least 6 characters";
+      } else {
+        updatedErrors.password = "";
+      }
+    } else {
+      updatedErrors.password = "Password is required";
+    }
 
+    setErrors(updatedErrors);
+  };
 
   return (
     <form className="login-form" onSubmit={handleSubmit} noValidate>
-      <h2>Login to Todo App</h2>
+      <h2 data-testid="login-page-title">Login to Todo App</h2>
 
       <div className="form-group">
         <input
           ref={usernameRef}
           type="text"
+          data-testid="username"
           placeholder="Username"
           className={errors.username ? "error" : ""}
           onChange={handleInputChange}
         />
-        {errors.username && <small className="error-text">{errors.username}</small>}
+        {errors.username && (
+          <small className="error-text">{errors.username}</small>
+        )}
       </div>
 
       <div className="form-group">
         <input
           ref={passwordRef}
           type="password"
+          data-testid="password"
           placeholder="Password"
           className={errors.password ? "error" : ""}
           onChange={handleInputChange}
         />
-        {errors.password && <small className="error-text">{errors.password}</small>}
+        {errors.password && (
+          <small className="error-text">{errors.password}</small>
+        )}
       </div>
 
-      <button type="submit" className="btn-login">Login</button>
+      <button type="submit" className="btn-login" data-testid="login-btn">
+        Login
+      </button>
     </form>
   );
 }

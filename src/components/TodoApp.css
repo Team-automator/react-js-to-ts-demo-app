@@ -117,3 +117,7 @@
   font-weight: bold;
   cursor: pointer;
 }
+.todo-count {
+  margin: 12px;
+  display: inline-block;
+}

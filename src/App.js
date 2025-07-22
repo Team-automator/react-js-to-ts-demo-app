@@ -1,29 +1,34 @@
-import React, { useContext, useState, useRef } from "react";
-import TodoForm from './components/TodoForm';
-import TodoList from './components/TodoList';
-import FilterButtons from './components/FilterButtons';
-import { AuthContext } from './context/AuthContext';
-import Login from './components/Login';
+import React, { useContext, useState, useRef, useMemo } from "react";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import FilterButtons from "./components/FilterButtons";
+import { AuthContext } from "./context/AuthContext";
+import Login from "./components/Login";
 function App() {
   const { user, logout, login } = useContext(AuthContext);
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("All");
   const titleRef = useRef();
 
+  const activeTodos = useMemo(
+    () => todos.filter((todo) => !todo.completed),
+    [todos]
+  );
+
   const handleAddTodo = (newTodo) => {
-    setTodos(prev => [newTodo, ...prev]);
+    setTodos((prev) => [newTodo, ...prev]);
   };
 
   const handleToggleComplete = (id) => {
-    setTodos(prev =>
-      prev.map(todo =>
+    setTodos((prev) =>
+      prev.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
   const handleDeleteTodo = (id) => {
-    setTodos(prev => prev.filter(todo => todo.id !== id));
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
   const filteredTodos = todos.filter((todo) => {
@@ -32,16 +37,20 @@ function App() {
     if (filter === "Active") return !todo.completed;
     return true;
   });
-console.log("iuser=",user);
+
   if (!user) {
-    return <Login onLogin={login}/>;
+    return <Login onLogin={login} />;
   }
 
   return (
     <div className="todo-container">
       <header className="todo-header">
-        <h1 ref={titleRef}>Welcome, {user.name}!</h1>
-        <button className="logout-button" onClick={logout}>Logout</button>
+        <h1 data-testid="app-title" ref={titleRef}>
+          Welcome, {user.name}!
+        </h1>
+        <button className="logout-button" onClick={logout}>
+          Logout
+        </button>
       </header>
       <TodoForm onAddTodo={handleAddTodo} />
       <FilterButtons currentFilter={filter} onChange={setFilter} />
@@ -50,6 +59,9 @@ console.log("iuser=",user);
         onToggleComplete={handleToggleComplete}
         onDeleteTodo={handleDeleteTodo}
       />
+      <span data-testid="todo-count" className="todo-count">{`${
+        activeTodos.length
+      } ${activeTodos.length === 1 ? "item" : "items"} left`}</span>
     </div>
   );
 }

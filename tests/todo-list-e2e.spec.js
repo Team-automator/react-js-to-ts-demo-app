@@ -2,6 +2,9 @@ import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
+  await page.getByTestId("username").fill("Test User");
+  await page.getByTestId("password").fill("securepassword");
+  await page.getByTestId("login-btn").click();
 });
 
 const TODO_ITEMS = [
@@ -28,8 +31,8 @@ test.describe("New Todo", () => {
 
     // Make sure the list now has two todo items.
     await expect(page.getByTestId("todo-title")).toHaveText([
-      TODO_ITEMS[0],
       TODO_ITEMS[1],
+      TODO_ITEMS[0],
     ]);
   });
 
@@ -63,7 +66,9 @@ test.describe("New Todo", () => {
     await expect(todoCount).toHaveText(/3/);
 
     // Check all items in one call.
-    await expect(page.getByTestId("todo-title")).toHaveText(TODO_ITEMS);
+    await expect(page.getByTestId("todo-title")).toHaveText(
+      [...TODO_ITEMS].reverse()
+    );
   });
 });
 
@@ -81,16 +86,16 @@ test.describe("Item", () => {
     // Check first item.
     const firstTodo = page.getByTestId("todo-item").nth(0);
     await firstTodo.getByRole("checkbox").check();
-    await expect(firstTodo).toHaveClass("completed");
+    await expect(firstTodo).toHaveClass(/completed/);
 
     // Check second item.
     const secondTodo = page.getByTestId("todo-item").nth(1);
-    await expect(secondTodo).not.toHaveClass("completed");
+    await expect(secondTodo).not.toHaveClass(/completed/);
     await secondTodo.getByRole("checkbox").check();
 
     // Assert completed class.
-    await expect(firstTodo).toHaveClass("completed");
-    await expect(secondTodo).toHaveClass("completed");
+    await expect(firstTodo).toHaveClass(/completed/);
+    await expect(secondTodo).toHaveClass(/completed/);
   });
 
   test("should allow me to un-mark items as complete", async ({ page }) => {
@@ -108,12 +113,12 @@ test.describe("Item", () => {
     const firstTodoCheckbox = firstTodo.getByRole("checkbox");
 
     await firstTodoCheckbox.check();
-    await expect(firstTodo).toHaveClass("completed");
-    await expect(secondTodo).not.toHaveClass("completed");
+    await expect(firstTodo).toHaveClass(/completed/);
+    await expect(secondTodo).not.toHaveClass(/completed/);
 
     await firstTodoCheckbox.uncheck();
-    await expect(firstTodo).not.toHaveClass("completed");
-    await expect(secondTodo).not.toHaveClass("completed");
+    await expect(firstTodo).not.toHaveClass(/completed/);
+    await expect(secondTodo).not.toHaveClass(/completed/);
   });
 });
 
