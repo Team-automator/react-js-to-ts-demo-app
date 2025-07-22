@@ -19,7 +19,7 @@ function TodoForm({ onAddTodo }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="todo-form">
       <input
         name="title"
         data-testid="todo-input"

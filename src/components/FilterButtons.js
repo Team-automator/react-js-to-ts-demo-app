@@ -8,7 +8,7 @@ function FilterButtons({ currentFilter, onChange }) {
   ];
 
   return (
-    <div style={{ marginTop: "10px" }}>
+    <div style={{ marginTop: "10px" }} className="filter-buttons">
       {filters.map((filter) => (
         <button
           key={filter.testId}
